@@ -1,8 +1,0 @@
-README.md
-pyproject.toml
-src/deep_learning_project/__init__.py
-src/deep_learning_project.egg-info/PKG-INFO
-src/deep_learning_project.egg-info/SOURCES.txt
-src/deep_learning_project.egg-info/dependency_links.txt
-src/deep_learning_project.egg-info/top_level.txt
-src/deep_learning_project/data/dataset.py
