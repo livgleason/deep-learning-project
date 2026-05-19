@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "deep_learning_project"
+version = "0.1.0"
+description = "MIDAS deep learning project"
+authors = [
+    {name = "Olivia Gleason"}
+]
+dependencies = [
+    "torch",
+    "torchvision",
+    "pandas",
+    "numpy",
+    "matplotlib",
+    "openpyxl",
+    "jupyter"
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
