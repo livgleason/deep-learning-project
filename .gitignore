@@ -1,0 +1,14 @@
+# dataset (KEEP ONLY lab_six tracked)
+data/
+labsix/
+
+# python cache
+__pycache__/
+*.pyc
+*.egg-info/
+
+# notebooks
+.ipynb_checkpoints/
+
+# system
+.DS_Store
