@@ -2,6 +2,12 @@ import os
 import pandas as pd
 from PIL import Image
 from torch.utils.data import Dataset
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+
+data_dir = ROOT / "sample_data" / "MIDAS"
+csv_file = ROOT / "sample_data" / "midas.csv"
 
 class MIDASDataset(Dataset):
     def __init__(self, data_dir, csv_file, transform=None,
