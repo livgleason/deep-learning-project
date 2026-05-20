@@ -22,7 +22,7 @@ class MIDASDataset(Dataset):
         self.patient_ids = list(self.patient_groups.groups.keys())
 
     def __len__(self):
-        return len(self.data)
+        return len(self.patient_ids)
 
     def __getitem__(self, index):
         patient_id = self.patient_ids[index]
