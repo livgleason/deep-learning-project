@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import torch
 from PIL import Image
 from torch.utils.data import Dataset
 from pathlib import Path
@@ -8,6 +9,8 @@ ROOT = Path(__file__).resolve().parents[2]
 
 data_dir = ROOT / "sample_data" / "images"
 csv_file = ROOT / "sample_data" / "midas_sample.csv"
+
+IMAGE_TYPE_MAP = {"dscope": 0,"6in": 1, "1ft": 2, "n/a - virtual": 3}
 
 class MIDASDataset(Dataset):
     def __init__(self, data_dir, csv_file, transform=None):
@@ -34,7 +37,7 @@ class MIDASDataset(Dataset):
             if self.transform:
                 image = self.transform(image)
             images.append(image)
-            image_type = row["midas_distance"]
+            image_type = IMAGE_TYPE_MAP[row["midas_distance"]]
             image_types.append(image_type)
         images = torch.stack(images)
         image_types = torch.tensor(image_types)
