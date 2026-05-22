@@ -12,6 +12,7 @@ csv_file = ROOT / "sample_data" / "midas_sample.csv"
 
 IMAGE_TYPE_MAP = {"dscope": 0,"6in": 1, "1ft": 2, "n/a - virtual": 3}
 GENDER_MAP = {"female": 0, "male": 1}
+LABEL_MAP = {"no": 0, "yes": 1}
 
 
 class MIDASDataset(Dataset):
@@ -31,7 +32,8 @@ class MIDASDataset(Dataset):
         patient_rows = self.patient_groups.get_group(patient_id)
         images = []
         image_types = []
-        label = patient_rows["midas_melanoma"].iloc[0]
+        label = str(patient_rows["midas_melanoma"].iloc[0])
+        label = LABEL_MAP.get(label, 0)
         gender = str(patient_rows["midas_gender"].iloc[0])
         gender = GENDER_MAP.get(gender, 0)
         age = float(patient_rows["midas_age"].iloc[0])
