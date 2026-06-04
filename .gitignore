@@ -15,7 +15,8 @@ venv/
 # old duplicate folders
 labsix/
 
-
+# Ignore datasets
+full_data/
 
 
 
