@@ -35,5 +35,4 @@ augment_transform = transforms.Compose([transforms.Resize((224, 224)), transform
                     LABAugmentation(t_range=(-0.15, 0.9), a_scale=10.0, b_scale=16.0, l_shift_range=(-3, 6), p=0.6), transforms.ToTensor(), 
                     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
-standard_transform = transforms.Compose([transforms.Resize((224, 224)), transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), 
-                     (0.5, 0.5, 0.5))])
+standard_transform = transforms.Compose([transforms.Resize((224, 224)), transforms.ToTensor()])

@@ -15,9 +15,11 @@ dependencies = [
     "pandas",
     "numpy",
     "matplotlib",
-    "openpyxl",
-    "jupyter"
+    "scikit-learn",
+    "scikit-image",
+    "Pillow"
 ]
+
 
 [tool.setuptools.packages.find]
 where = ["src"]
