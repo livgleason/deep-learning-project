@@ -18,6 +18,12 @@ labsix/
 # ignore datasets
 full_data/
 
+# ignore tcav full results
+tcav_results/
+
+# ignore
+anaconda_projects/
+
 # model checkpoints
 *.pth
 
