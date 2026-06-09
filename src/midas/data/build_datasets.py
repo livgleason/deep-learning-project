@@ -9,7 +9,7 @@ from midas.data.augmentation import augment_transform, standard_transform
 
 DATA_ROOT = os.environ.get("MIDAS_DATA_ROOT")
 if DATA_ROOT is None:
-    raise ValueError("Please set MIDAS_DATA_ROOT environment variable"
+    raise ValueError("Please set MIDAS_DATA_ROOT environment variable")
 
 MIDAS_IMG_DIR = os.path.join(DATA_ROOT, "MIDAS", "MIDAS_images")
 PAD_IMG_DIR = os.path.join(DATA_ROOT, "PAD-UFES-20", "PAD_images")
