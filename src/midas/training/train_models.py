@@ -7,9 +7,9 @@ from midas.models.models import DetectionModel
 from midas.data.build_datasets import train_loader, val_loader
 from sklearn.metrics import roc_auc_score
 
-torch.manual_seed(42)
-torch.cuda.manual_seed(42)
-np.random.seed(42)
+torch.manual_seed(7)
+torch.cuda.manual_seed(7)
+np.random.seed(7)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = DetectionModel().to(device)
