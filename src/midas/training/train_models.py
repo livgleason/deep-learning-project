@@ -7,6 +7,7 @@ from midas.data.build_datasets import train_loader, val_loader
 
 def main():
     print("Starting training script...")
+    from midas.data.build_datasets import train_loader, val_loader
 
     torch.manual_seed(42)
     if torch.cuda.is_available():
