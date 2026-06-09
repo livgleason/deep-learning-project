@@ -3,7 +3,7 @@ import numpy as np
 from tqdm import tqdm
 from sklearn.metrics import roc_auc_score
 from midas.models.models import DetectionModel
-from midas.data.build_datasets import train_loader, val_loader
+print("✅ train_models.py file loaded")
 
 def main():
     print("Starting training script...")
