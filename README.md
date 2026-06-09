@@ -7,8 +7,8 @@ This project develops a Multiple Instance Learning (MIL) model to classify skin 
 
 ## Dataset
 We use two datasets:
-- **MIDAS** — primary training/validation/test dataset of skin lesion images, provides both dermascope and smartphone imagery for each patient
-- **PAD-UFES-20** — external test dataset for generalization evaluation, contains smartphone imagery only
+- **MIDAS** - primary training/validation/test dataset of skin lesion images, provides both dermascope and smartphone imagery for each patient
+- **PAD-UFES-20** - external test dataset for generalization evaluation, contains smartphone imagery only
 
 Data is organized as patient "bags" — each patient has multiple images of their lesion. Labels are binary: 0 (non-cancerous) and 1 (cancerous). Both datasets provide patient metadata such as age, gender, lesion diameter, and medical history. Metadata was intentionally excluded from the final model to improve accessibility, as a model that relies only on images can be used by anyone with a smartphone camera without requiring clinical measurements or patient history. Age and gender metadata were tested during development but found to reduce model performance.
 
