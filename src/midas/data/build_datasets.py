@@ -7,30 +7,12 @@ from midas.data.dataloader import MIDASDataset, PADDataset, ConceptDataset
 from midas.data.augmentation import augment_transform, standard_transform
 
 
-def get_data_root():
-    data_root = os.environ.get("MIDAS_DATA_ROOT")
-
-    if data_root:
-        return data_root
-
-    raise ValueError(
-        "Dataset path not set.\n"
-        "Set environment variable MIDAS_DATA_ROOT to your dataset root.\n"
-        "Example:\n"
-        "export MIDAS_DATA_ROOT=/gpfs/home/ogleason/deep-learning-project/full_data")
-
-
-DATA_ROOT = get_data_root()
+DATA_ROOT = DATA_ROOT = "/gpfs/home/ogleason/deep-learning-project/full_data"
 
 MIDAS_IMG_DIR = os.path.join(DATA_ROOT, "MIDAS", "MIDAS_images")
 PAD_IMG_DIR = os.path.join(DATA_ROOT, "PAD-UFES-20", "PAD_images")
 MIDAS_CSV = os.path.join(DATA_ROOT, "MIDAS", "midas.csv")
 PAD_CSV = os.path.join(DATA_ROOT, "PAD-UFES-20", "metadata.csv")
-
-for path in [MIDAS_IMG_DIR, PAD_IMG_DIR, MIDAS_CSV, PAD_CSV]:
-    if not os.path.exists(path):
-        raise FileNotFoundError(f"Missing required dataset file: {path}")
-
 
 MIDAS_metadata = pd.read_csv(MIDAS_CSV)
 PAD_metadata = pd.read_csv(PAD_CSV)

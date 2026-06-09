@@ -3,11 +3,7 @@ import numpy as np
 from tqdm import tqdm
 from sklearn.metrics import roc_auc_score
 from midas.models.models import DetectionModel
-print("✅ train_models.py file loaded")
-
-def main():
-    print("Starting training script...")
-    from midas.data.build_datasets import train_loader, val_loader
+from midas.data.build_datasets import train_loader, val_loader
 
     torch.manual_seed(42)
     if torch.cuda.is_available():
@@ -15,8 +11,6 @@ def main():
     np.random.seed(42)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print("Using device:", device)
-
     model = DetectionModel().to(device)
 
     criterion = torch.nn.BCEWithLogitsLoss()
@@ -38,7 +32,6 @@ def main():
     val_aucs = []
     best_auc = 0
 
-    print("Beginning training loop...")
     for epoch in range(num_epochs):
         model.train()
         running_loss = 0.0
@@ -98,7 +91,3 @@ def main():
                 break
 
         print(f"\nEpoch {epoch+1}/{num_epochs}: "f"Train Loss: {avg_train_loss:.4f}, "f"Val Loss: {val_loss:.4f}, "f"Val AUC: {val_auc:.4f}")
-    print("Training complete.")
-
-if __name__ == "__main__":
-    main()
