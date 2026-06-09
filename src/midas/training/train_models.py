@@ -1,79 +1,93 @@
-import os
 import torch
 import pandas as pd
-
-from torch.utils.data import DataLoader, ConcatDataset
-from sklearn.model_selection import train_test_split
-
+import numpy as np
+import matplotlib.pyplot as plt
+from tqdm import tqdm
 from midas.models.models import DetectionModel
-from midas.data.dataset import MIDASDataset, PADDataset
-from midas.data.augmentation import augment_transform, standard_transform
-from midas.training.utils import *
+from midas.data.build_datasets import train_loader, val_loader
+from sklearn.metrics import roc_auc_score
 
-DATA_ROOT = os.environ.get("MIDAS_DATA_ROOT")
-if DATA_ROOT is None:
-    raise ValueError("Set MIDAS_DATA_ROOT=/deep-learning-project/full_data")
-
-MIDAS_IMG_DIR = os.path.join(DATA_ROOT, "MIDAS", "MIDAS_images")
-PAD_IMG_DIR = os.path.join(DATA_ROOT, "PAD-UFES-20", "PAD_images")
-MIDAS_CSV = os.path.join(DATA_ROOT, "MIDAS", "midas.csv")
-PAD_CSV = os.path.join(DATA_ROOT, "PAD-UFES-20", "metadata.csv")
-
-
-metadata = pd.read_csv(MIDAS_CSV)
-
-train_ids, test_ids = train_test_split(metadata["midas_record_id"].unique(), test_size=0.15, random_state=42)
-train_ids, val_ids = train_test_split(train_ids, test_size=0.1765, random_state=42)
-
-train_df = metadata[metadata["midas_record_id"].isin(train_ids)]
-val_df = metadata[metadata["midas_record_id"].isin(val_ids)]
-test_df = metadata[metadata["midas_record_id"].isin(test_ids)]
-
-age_mean, age_std = compute_age_stats(train_df, "midas_age")
-
-
-train_dataset = ConcatDataset([MIDASDataset(MIDAS_DIR, train_df, standard_transform, age_mean, age_std), MIDASDataset(MIDAS_DIR, train_df, augment_transform, age_mean, age_std)])
-val_dataset = MIDASDataset(MIDAS_DIR, val_df, standard_transform, age_mean, age_std)
-
-train_loader = DataLoader(train_dataset, batch_size=1, shuffle=True)
-val_loader = DataLoader(val_dataset, batch_size=1)
-
+torch.manual_seed(42)
+torch.cuda.manual_seed(42)
+np.random.seed(42)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = DetectionModel().to(device)
 
-criterion = torch.nn.BCEWithLogitsLoss(pos_weight=torch.tensor([2.0]).to(device))
-optimizer = torch.optim.AdamW(model.parameters(), lr=7e-5)
+criterion = torch.nn.BCEWithLogitsLoss()
+optimizer = torch.optim.AdamW(model.parameters(), lr=5e-5)
+scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.5, patience=2)
 
+for param in model.encoder.parameters():
+    param.requires_grad = False
+for name, param in model.encoder.named_parameters():
+    if "layer2" in name or "layer3" in name or "layer4" in name:
+        param.requires_grad = True
 
+num_epochs = 25  
+early_stop_patience = 5 
+epochs_no_improve = 0 
+
+train_losses = []
+val_losses = []
+val_aucs = []
 best_auc = 0
 
-for epoch in range(30):
+for epoch in range(num_epochs):
     model.train()
-    total_loss = 0
+    running_loss = 0.0
 
-    for images, _, metadata, label in train_loader:
+    for images, _, _, label in tqdm(train_loader):
+        
         images = images.squeeze(0).to(device)
-        metadata = metadata.squeeze(0).to(device)
         label = label.float().to(device)
-
+        
         optimizer.zero_grad()
-        loss = criterion(model(images, metadata).view(1), label.view(1))
+        logits = model(images)
+        loss = criterion(logits.view(1), label.view(1))
         loss.backward()
         optimizer.step()
+        running_loss += loss.item()
 
-        total_loss += loss.item()
+    avg_train_loss = running_loss / len(train_loader)
+    train_losses.append(avg_train_loss)
 
-    val_auc, *_ = evaluate(model, val_loader, device)
+    model.eval()
+    all_probs = []
+    all_labels = []
+    val_loss_total = 0
 
-    print(f"Epoch {epoch+1} | Loss: {total_loss:.4f} | AUC: {val_auc:.4f}")
+    with torch.no_grad():
+        for images, _, _, label in val_loader:
+            
+            images = images.squeeze(0).to(device)
+            label = label.float().to(device)
+            
+            logits = model(images)
+            loss = criterion(logits.view(1), label.view(1))
+            val_loss_total += loss.item()
+            
+            probs = torch.sigmoid(logits)
+            all_probs.append(probs.view(-1).cpu())
+            all_labels.append(label.view(-1).cpu())
+
+    all_probs = torch.cat(all_probs).numpy()
+    all_labels = torch.cat(all_labels).numpy()
+    
+    val_loss = val_loss_total / len(val_loader)
+    val_losses.append(val_loss)
+    val_auc = roc_auc_score(all_labels, all_probs)
+    val_aucs.append(val_auc)
+    scheduler.step(val_auc)
 
     if val_auc > best_auc:
         best_auc = val_auc
-        torch.save(model.state_dict(), "model.pt")
+        epochs_no_improve = 0
+        torch.save(model.state_dict(), "best_model.pth")
+    else:
+        epochs_no_improve += 1
+        if epochs_no_improve >= early_stop_patience:
+            print(f"Early stopping at epoch {epoch+1}")
+            break
 
-PAD_dataset = PADDataset(PAD_IMG_DIR, PAD_CSV, standard_transform, age_mean, age_std)
-PAD_loader = DataLoader(PAD_dataset, batch_size=1)
-evaluate(model, PAD_loader, device)
-
-
+    print(f"\nEpoch {epoch+1}/{num_epochs}: "f"Train Loss: {avg_train_loss:.4f}, "f"Val Loss: {val_loss:.4f}, "f"Val AUC: {val_auc:.4f}")

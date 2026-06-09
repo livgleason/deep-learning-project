@@ -17,9 +17,14 @@ dependencies = [
     "matplotlib",
     "scikit-learn",
     "scikit-image",
-    "Pillow"
+    "Pillow",
+    "tqdm",
+    "captum",
+    "seaborn",
+    "openpyxl",
+    "jupyter",
+    "timm"
 ]
-
 
 [tool.setuptools.packages.find]
 where = ["src"]

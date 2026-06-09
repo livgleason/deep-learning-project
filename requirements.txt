@@ -3,5 +3,12 @@ torchvision
 pandas
 numpy
 matplotlib
+scikit-learn
+scikit-image
+Pillow
+tqdm
+captum
+seaborn
 openpyxl
 jupyter
+timm

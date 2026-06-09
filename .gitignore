@@ -15,10 +15,15 @@ venv/
 # old duplicate folders
 labsix/
 
-# Ignore datasets
+# ignore datasets
 full_data/
 
+# model checkpoints
+*.pth
 
+# build artifacts
+build/
+dist/
 
 
 
