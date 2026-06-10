@@ -7,7 +7,7 @@ from midas.data.dataloader import MIDASDataset, PADDataset, ConceptDataset
 from midas.data.augmentation import augment_transform, standard_transform
 
 
-DATA_ROOT = DATA_ROOT = "/gpfs/home/ogleason/deep-learning-project/full_data"
+DATA_ROOT = os.getenv("DATA_ROOT", "/gpfs/home/ogleason/deep-learning-project/full_data")
 
 MIDAS_IMG_DIR = os.path.join(DATA_ROOT, "MIDAS", "MIDAS_images")
 PAD_IMG_DIR = os.path.join(DATA_ROOT, "PAD-UFES-20", "PAD_images")
