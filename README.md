@@ -34,7 +34,7 @@ For running training:
 cd src/midas/training
 python train_models.py
 ```
-After training finishes, the best model will be saved as `best_model.pth`, in: src/midas/training/best_model.pth
+After training finishes, the best model will be saved as `best_model.pth` in: src/midas/training/best_model.pth
 
 ## Model Details
 - Model: DetectionModel (MIL-based architecture)
