@@ -49,8 +49,8 @@ The best model checkpoint will be saved as `best_model.pth`, at `/gpfs/home/ogle
 - F1: 0.327
 
 <p align="center">
-  <img src="notebooks/images/roc_curve_Test.png" width="48%" />
-  <img src="notebooks/images/confusion_matrix_Test.png" width="48%" />
+  <img src="notebooks/assets/roc_curve_Test.png" width="48%" />
+  <img src="notebooks/assets/confusion_matrix_Test.png" width="48%" />
 </p>
 
 The model achieves very high recall (0.94), indicating that it successfully identifies most cancerous lesions. This aligns with the primary design goal of minimizing false negatives in a medical screening context. However, this comes at a substantial cost. The model exhibits very low precision (0.20), meaning that the majority of positive predictions are incorrect. In practice, this would lead to a large number of unnecessary follow-ups, reducing the model’s usefulness in real-world deployment. The AUC of 0.586 is only slightly better than random guessing, suggesting that the model has weak overall discriminative ability. This indicates that while the model is biased toward predicting positives (driving high recall), it has not learned strong features that reliably distinguish between cancerous and non-cancerous lesions.
@@ -62,8 +62,8 @@ The model achieves very high recall (0.94), indicating that it successfully iden
 - F1: 0.038
 
 <p align="center">
-  <img src="notebooks/images/roc_curve_PAD.png" width="48%" />
-  <img src="notebooks/images/confusion_matrix_PAD.png" width="48%" />
+  <img src="notebooks/assets/roc_curve_PAD.png" width="48%" />
+  <img src="notebooks/assets/confusion_matrix_PAD.png" width="48%" />
 </p>
 
 Performance on the external PAD-UFES-20 dataset is poor across nearly all metrics. While recall remains high (0.89), this is largely due to the model predicting positive for a significant portion of samples rather than demonstrating meaningful generalization. Precision drops to 0.019, indicating that nearly all positive predictions are false positives. This suggests the model has very limited ability to distinguish true cancerous cases in a new domain. The AUC of 0.465 is below 0.5, meaning the model performs worse than random guessing in ranking predictions. This is a strong indicator that the model has failed to generalize beyond the training distribution and may be overfitting to dataset-specific artifacts in MIDAS.
