@@ -37,7 +37,13 @@ PAD_loader = DataLoader(PAD_dataset, batch_size=1)
 
 dark_skin_df = PAD_metadata[PAD_metadata['fitspatrick'].isin([4, 5, 6])].sample(n=min(100, len(PAD_metadata[PAD_metadata['fitspatrick'].isin([4, 5, 6])])), random_state=42)
 light_skin_df = PAD_metadata[PAD_metadata['fitspatrick'].isin([1, 2, 3])].sample(n=min(100, len(PAD_metadata[PAD_metadata['fitspatrick'].isin([1, 2, 3])])), random_state=42)
-random_skin_df = PAD_metadata.sample(n=100, random_state=0)
+random_skin_df = PAD_metadata.sample(n=200, random_state=0)
+random_skin_df = random_skin_df[~random_skin_df['img_id'].isin(list(dark_skin_df['img_id']) + list(light_skin_df['img_id']))].sample(n=100, random_state=0)
+
+N = min(len(dark_skin_df), len(light_skin_df), 80)
+dark_skin_df  = dark_skin_df.sample(n=N, random_state=42)
+light_skin_df = light_skin_df.sample(n=N, random_state=42)
+random_skin_df = random_skin_df.sample(n=N, random_state=42)
 
 dark_skin_loader   = DataLoader(ConceptDataset(PAD_IMG_DIR, dark_skin_df, standard_transform), batch_size=16)
 light_skin_loader   = DataLoader(ConceptDataset(PAD_IMG_DIR, light_skin_df, standard_transform), batch_size=16)

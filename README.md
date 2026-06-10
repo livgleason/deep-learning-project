@@ -32,3 +32,8 @@ The best model checkpoint will be saved as `best_model.pth`.
 ## Results
 
 ## Limitations
+- not a ton of data
+- lab-space augmentation relatively simplified
+- overall lack of avaliable resources for implementation of LAB-space augmentation
+- very few dark skin images to do TCAV analysis with
+- had to limit layers of methodology of TCAV due to memory issues (not sure if this is limitation)

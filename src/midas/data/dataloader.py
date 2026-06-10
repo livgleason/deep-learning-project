@@ -112,24 +112,29 @@ class PADDataset(Dataset):
 
         return images, image_types, metadata, label
 
+
 class ConceptDataset(Dataset):
     def __init__(self, data_dir, data, transform=None):
         self.data_dir = data_dir
-        
+
         if isinstance(data, pd.DataFrame):
             self.data = data.reset_index(drop=True)
         else:
             self.data = pd.read_csv(data)
-       
+
         self.transform = transform
-    
+
     def __len__(self):
         return len(self.data)
-    
+
     def __getitem__(self, index):
         row = self.data.iloc[index]
+
         image_path = os.path.join(self.data_dir, row['img_id'])
         image = Image.open(image_path).convert("RGB")
+
         if self.transform:
             image = self.transform(image)
-        return image, 0
+
+        return image
+
