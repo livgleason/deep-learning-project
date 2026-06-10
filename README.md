@@ -14,6 +14,23 @@ We use two datasets, both available through [Stanford AIMI](https://stanfordaimi
 
 Both datasets provide patient metadata such as age, gender, lesion diameter, and medical history, with binary labels: 0 (non-cancerous) and 1 (cancerous). Metadata was intentionally excluded from the final model to improve accessibility, as a model that relies only on images can be used by anyone with a smartphone camera without requiring clinical measurements or patient history. Age and gender metadata were tested during development but found to reduce model performance. For model use, all images corresponding to one patient were grouped with their corresponding cancer/no cancer label.
 
+The data structure is as follows:
+
+full_data/
+├── MIDAS/
+│   ├── MIDAS_images/
+│   │   ├── image_1.png
+│   │   ├── image_2.png
+│   │   └── ...
+│   └── midas.csv
+│
+├── PAD-UFES-20/
+│   ├── PAD_images/
+│   │   ├── PAT_0001.png
+│   │   ├── PAT_0002.png
+│   │   └── ...
+│   └── metadata.csv
+
 ## How to Train
 Due to the size of both datasets, they are not included in this repository and are instead located on Talapas. As such, training requires the individual to SSH into talapas and run these commands:
 
@@ -26,7 +43,7 @@ pip install -e .
 ```
 For setting data path:
 ```bash
-export DATA_ROOT="/gpfs/home/ogleason/deep-learning-project/full_data"
+export DATA_ROOT="/projects/dsci410_510/ogleason/data/full_data"
 ```
 
 For running training:
@@ -34,7 +51,7 @@ For running training:
 cd src/midas/training
 python train_models.py
 ```
-After training finishes, the best model will be saved as `best_model.pth` in: src/midas/training/best_model.pth
+After training finishes, the best model will be saved as `best_model.pth` in: /projects/dsci410_510/ogleason/models/best_model.pth
 
 ## Model Details
 - Model: DetectionModel (MIL-based architecture)
