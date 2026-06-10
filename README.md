@@ -8,7 +8,7 @@ This project develops a Multiple Instance Learning (MIL) model to classify skin 
 To improve representation across skin tones, we apply LAB color space augmentation. We also analyze fairness using TCAV (Testing with Concept Activation Vectors) to evaluate whether skin tone influences model predictions.
 
 ## Dataset
-We use two datasets:
+We use two datasets, both available through [Stanford AIMI](https://stanfordaimi.azurewebsites.net/datasets/f4c2020f-801a-42dd-a477-a1a8357ef2a5):
 - **MIDAS**: primary training/validation/test dataset of skin lesion images, provides both dermascope and smartphone imagery for each patient
 - **PAD-UFES-20**: external test dataset for generalization evaluation, contains smartphone imagery only
 
