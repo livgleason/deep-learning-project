@@ -16,7 +16,8 @@ Both datasets provide patient metadata such as age, gender, lesion diameter, and
 
 The data structure is as follows:
 
-full_data/
+```
+/projects/dsci410_510/ogleason/data/full_data/
 ├── MIDAS/
 │   ├── MIDAS_images/
 │   │   ├── image_1.png
@@ -30,6 +31,7 @@ full_data/
 │   │   ├── PAT_0002.png
 │   │   └── ...
 │   └── metadata.csv
+```
 
 ## How to Train
 Due to the size of both datasets, they are not included in this repository and are instead located on Talapas. As such, training requires the individual to SSH into talapas and run these commands:
