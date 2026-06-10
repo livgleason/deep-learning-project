@@ -15,23 +15,26 @@ We use two datasets, both available through [Stanford AIMI](https://stanfordaimi
 Both datasets provide patient metadata such as age, gender, lesion diameter, and medical history, with binary labels: 0 (non-cancerous) and 1 (cancerous). Metadata was intentionally excluded from the final model to improve accessibility, as a model that relies only on images can be used by anyone with a smartphone camera without requiring clinical measurements or patient history. Age and gender metadata were tested during development but found to reduce model performance. For model use, all images corresponding to one patient were grouped with their corresponding cancer/no cancer label.
 
 ## How to Train
+Due to the size of both datasets, they are not included in this repository and are instead located on Talapas. As such, training requires the individual to SSH into talapas and run these commands:
+
+For cloning repo and installing dependencies:
 ```bash
 git clone https://github.com/livgleason/deep-learning-project.git
 cd deep-learning-project
 pip install -r requirements.txt
 pip install -e .
 ```
-Due to the size of both datasets, they are not included in this repository and are instead located on Talapas.  
+For setting data path:
 ```bash
 export DATA_ROOT="/gpfs/home/ogleason/deep-learning-project/full_data"
 ```
 
-After setting DATA_ROOT, run
+For running training:
 ```bash
 cd src/midas/training
 python train_models.py
 ```
-The best model checkpoint will be saved as `best_model.pth`, at `/gpfs/home/ogleason/deep-learning-project/src/midas/training/best_model.pth`.
+After training finishes, the best model will be saved as `best_model.pth`, in: src/midas/training/best_model.pth
 
 ## Model Details
 - Model: DetectionModel (MIL-based architecture)
